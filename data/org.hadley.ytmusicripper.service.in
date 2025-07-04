@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.hadley.ytmusicripper
+Exec=@bindir@/ytmusicripper --gapplication-service

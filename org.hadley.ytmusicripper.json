@@ -1,0 +1,38 @@
+{
+    "id" : "org.hadley.ytmusicripper",
+    "runtime" : "org.gnome.Platform",
+    "runtime-version" : "47",
+    "sdk" : "org.gnome.Sdk",
+    "command" : "ytmusicripper",
+    "finish-args" : [
+        "--share=network",
+        "--share=ipc",
+        "--socket=fallback-x11",
+        "--device=dri",
+        "--socket=wayland"
+    ],
+    "cleanup" : [
+        "/include",
+        "/lib/pkgconfig",
+        "/man",
+        "/share/doc",
+        "/share/gtk-doc",
+        "/share/man",
+        "/share/pkgconfig",
+        "*.la",
+        "*.a"
+    ],
+    "modules" : [
+        {
+            "name" : "ytmusicripper",
+            "builddir" : true,
+            "buildsystem" : "meson",
+            "sources" : [
+                {
+                    "type" : "git",
+                    "url" : "file:///home/ethanscharlie/Documents/Projects/Code/GTK"
+                }
+            ]
+        }
+    ]
+}

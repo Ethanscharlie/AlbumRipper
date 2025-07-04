@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=ytmusicripper
+Exec=ytmusicripper
+Icon=org.hadley.ytmusicripper
+Terminal=false
+Type=Application
+Categories=Utility;
+Keywords=GTK;
+StartupNotify=true
+DBusActivatable=true

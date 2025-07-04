@@ -1,0 +1,8 @@
+# List of source files containing translatable strings.
+# Please keep this file sorted alphabetically.
+data/org.hadley.ytmusicripper.desktop.in
+data/org.hadley.ytmusicripper.metainfo.xml.in
+data/org.hadley.ytmusicripper.gschema.xml
+src/main.py
+src/window.py
+src/window.ui
