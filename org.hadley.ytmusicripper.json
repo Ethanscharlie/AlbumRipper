@@ -31,7 +31,8 @@
             "sources" : [
                 {
                     "type" : "git",
-                    "url" : "file:///home/ethanscharlie/Documents/Projects/Code/GTK"
+                    "url" : "file:///home/ethanscharlie/Documents/Projects/Code/GTK/YTMusicRipper/",
+        	    "branch": "main"
                 }
             ]
         }
