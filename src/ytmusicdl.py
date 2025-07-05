@@ -100,6 +100,7 @@ def download_content_to_folder(track_url, folder, track_title):
     os.system(f"cd '{folder}'")
 
     ydl_opts = {
+        "quiet": True,
         "format": "bestaudio/best",
         "postprocessors": [
             {
@@ -169,12 +170,16 @@ class AlbumDownloader:
         self.totalToDownload = 0
 
         album = getAlbumFromURL(self.url)
-        self.totalToDownload = len(album.tracks)
+        self.totalToDownload = len(album.tracks) + 2
+        self.finishedDownloading += 1
+        print(f"STATUS: {self.getStatus() * 100}% finished for {album.album}")
 
         createDirsFromFolderWithAlbum(self.folder, album)
         album_folder = os.path.join(self.folder, album.artist, album.album)
 
         downloadCoverArtToFolder(album.coverArtUrl, album_folder)
+        self.finishedDownloading += 1
+        print(f"STATUS: {self.getStatus() * 100}% finished for {album.album}")
 
         with concurrent.futures.ThreadPoolExecutor() as executor:
             for track in album.tracks:
@@ -206,3 +211,4 @@ class AlbumDownloader:
         writeCoverArtToExistingFile(coverArtFile, trackFile)
 
         self.finishedDownloading += 1
+        print(f"STATUS: {self.getStatus() * 100}% finished for {album.album}")
