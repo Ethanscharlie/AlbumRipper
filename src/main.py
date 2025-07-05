@@ -19,6 +19,7 @@
 
 import sys
 import gi
+import threading
 
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
@@ -50,7 +51,7 @@ class YtmusicripperApplication(Adw.Application):
         url = win.url_entry.get_text()
         print(f"Entry says: {url}")
 
-        ytmain()
+        threading.Thread(target=ytmain).start()
 
     def do_activate(self):
         """Called when the application is activated.
