@@ -1,4 +1,4 @@
-# window.py
+# queue_item.py
 #
 # Copyright 2025 Unknown
 #
@@ -20,14 +20,19 @@
 from gi.repository import Adw
 from gi.repository import Gtk
 
-from .queue_item import QueueItem
+from .ytmusicdl import AlbumDownloader
+import threading
 
-@Gtk.Template(resource_path='/org/hadley/ytmusicripper/window.ui')
-class YtmusicripperWindow(Adw.ApplicationWindow):
-    __gtype_name__ = 'YtmusicripperWindow'
+@Gtk.Template(resource_path='/org/hadley/ytmusicripper/queue_item.ui')
+class QueueItem(Adw.PreferencesGroup):
+    __gtype_name__ = 'queue_item'
 
-    url_entry = Gtk.Template.Child()
-    queue_container = Gtk.Template.Child("queue_container")
+    action_row = Gtk.Template.Child("action_row")
+    status_label = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        downloader = AlbumDownloader(self.action_row, self.status_label)
+        threading.Thread(target=downloader.download).start()
+
+

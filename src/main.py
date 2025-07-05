@@ -28,6 +28,7 @@ from gi.repository import Gtk, Gio, Adw
 from .window import YtmusicripperWindow
 
 from .ytmusicdl import AlbumDownloader
+from .queue_item import QueueItem
 
 class YtmusicripperApplication(Adw.Application):
     """The main application singleton class."""
@@ -41,6 +42,14 @@ class YtmusicripperApplication(Adw.Application):
         self.create_action('preferences', self.on_preferences_action)
         self.create_action('rip', self.on_rip)
 
+    def test_add_element(self):
+        win = self.props.active_window
+        if not win or not hasattr(win, 'queue_container'):
+            print("No queue container found!")
+            return
+
+        win.queue_container.add(QueueItem())
+
     def on_rip(self, *args):
         win = self.props.active_window
         if not win or not hasattr(win, 'url_entry'):
@@ -50,8 +59,8 @@ class YtmusicripperApplication(Adw.Application):
         url = win.url_entry.get_text()
         print(f"Entry says: {url}")
 
-        downloader = AlbumDownloader()
-        threading.Thread(target=downloader.download).start()
+        self.test_add_element()
+
 
     def do_activate(self):
         """Called when the application is activated.

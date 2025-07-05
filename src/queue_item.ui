@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="Adw" version="1.0"/>
+  <template class="queue_item" parent="AdwPreferencesGroup">
+    <child>
+      <object class="AdwActionRow" id="action_row">
+        <property name="title">Loading</property>
+        <property name="subtitle">Loading</property>
+        <child>
+          <object class="GtkLabel" id="status_label">
+            <property name="label">Loading</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

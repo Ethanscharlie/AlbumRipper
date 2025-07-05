@@ -157,7 +157,12 @@ TESTING_URL = (
 
 
 class AlbumDownloader:
-    def __init__(self, url: str = TESTING_URL, folder: str = HOME_MUSIC_FOLDER):
+    def __init__(
+        self, action_row, status_label, url: str = TESTING_URL, folder: str = HOME_MUSIC_FOLDER
+    ):
+        self.action_row = action_row
+        self.status_label = status_label
+
         self.url = url
         self.folder = folder
 
@@ -169,17 +174,23 @@ class AlbumDownloader:
         self.finishedDownloading = 0
         self.totalToDownload = 0
 
+        self.status_label.set_label("Getting album info")
+
         album = getAlbumFromURL(self.url)
-        self.totalToDownload = len(album.tracks) + 2
-        self.finishedDownloading += 1
-        print(f"STATUS: {self.getStatus() * 100}% finished for {album.album}")
+        self.action_row.set_title(album.album)
+        self.action_row.set_subtitle(album.artist)
+        self.totalToDownload = len(album.tracks)
+
+        self.status_label.set_label("Creating Dirs")
 
         createDirsFromFolderWithAlbum(self.folder, album)
         album_folder = os.path.join(self.folder, album.artist, album.album)
 
+        self.status_label.set_label("Downloading album art")
+
         downloadCoverArtToFolder(album.coverArtUrl, album_folder)
-        self.finishedDownloading += 1
-        print(f"STATUS: {self.getStatus() * 100}% finished for {album.album}")
+
+        self.status_label.set_label("Downloading content")
 
         with concurrent.futures.ThreadPoolExecutor() as executor:
             for track in album.tracks:
@@ -189,15 +200,7 @@ class AlbumDownloader:
 
         download_time = time.time() - download_start_time
         print(f"Download took {download_time:.2f} seconds")
-
-    def getStatus(self) -> float:
-        if self.finishedDownloading == 0:
-            return 0
-
-        if self.totalToDownload == 0:
-            return 0
-
-        return self.finishedDownloading / self.totalToDownload
+        self.status_label.set_label(f"Finished in {download_time:.2f} seconds")
 
     def __downloadTrackAndWriteMetadata(
         self, albumFolder: str, album: Album, track: Track
@@ -211,4 +214,5 @@ class AlbumDownloader:
         writeCoverArtToExistingFile(coverArtFile, trackFile)
 
         self.finishedDownloading += 1
-        print(f"STATUS: {self.getStatus() * 100}% finished for {album.album}")
+
+        self.status_label.set_label(f"Downloading content {self.finishedDownloading}/{self.totalToDownload}")

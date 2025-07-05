@@ -30,7 +30,8 @@ ytmusicripper_sources = [
   '__init__.py',
   'main.py',
   'window.py',
-  'ytmusicdl.py'
+  'ytmusicdl.py',
+  'queue_item.py'
 ]
 
 install_data(ytmusicripper_sources, install_dir: moduledir)
