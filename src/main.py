@@ -27,8 +27,7 @@ gi.require_version('Adw', '1')
 from gi.repository import Gtk, Gio, Adw
 from .window import YtmusicripperWindow
 
-from.ytmusicdl import main as ytmain
-
+from .ytmusicdl import AlbumDownloader
 
 class YtmusicripperApplication(Adw.Application):
     """The main application singleton class."""
@@ -51,7 +50,8 @@ class YtmusicripperApplication(Adw.Application):
         url = win.url_entry.get_text()
         print(f"Entry says: {url}")
 
-        threading.Thread(target=ytmain).start()
+        downloader = AlbumDownloader()
+        threading.Thread(target=downloader.download).start()
 
     def do_activate(self):
         """Called when the application is activated.

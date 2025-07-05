@@ -26,6 +26,7 @@ import yt_dlp
 class Track:
     title: str
     url: str
+    index: int  # Starting at 1
 
 
 @dataclass
@@ -34,6 +35,7 @@ class Album:
     artist: str
     year: int
     tracks: list[Track]
+    coverArtUrl: str
 
 
 def filterChars(text: str) -> str:
@@ -53,156 +55,136 @@ def filterChars(text: str) -> str:
 def downloadCoverArtToFolder(url: str, folder: str):
     urllib.request.urlretrieve(url, os.path.join(folder, "cover.jpg"))
 
-def getCoverArtUrlFromUrl(url: str) -> str:
-    art_url = ""
-
-    ydl_opts = {
-        'quiet': True,  # Suppress standard output
-        'extract_flat': True,  # Equivalent to --flat-playlist
-        'force_generic_extractor': True,  # Ensure it's using the generic extractor if necessary
-    }
-
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        info_dict = ydl.extract_info(url, download=False)
-        art_url = info_dict["thumbnails"][1]["url"]
-
-    return art_url
-
 
 def getTrackListFromEntriesJson(entriesJson: str) -> list[Track]:
     tracks = []
-    for data in entriesJson:
-        tracks.append(Track(filterChars(data["title"]), data["url"]))
+    for i, data in enumerate(entriesJson):
+        tracks.append(Track(filterChars(data["title"]), data["url"], i + 1))
 
     return tracks
 
 
 def getAlbumFromURL(url: str) -> Album:
     ydl_opts = {
-        'quiet': True,  # Suppress standard output
-        'extract_flat': True,  # Equivalent to --flat-playlist
-        'force_generic_extractor': True,  # Ensure it's using the generic extractor if necessary
+        "quiet": True,
+        "extract_flat": True,
+        "force_generic_extractor": True,
     }
 
-    album = None
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info_dict = ydl.extract_info(url, download=False)
 
-        tracks = getTrackListFromEntriesJson(info_dict["entries"])
-
-        album = Album(
+        return Album(
             filterChars(info_dict["title"].replace("Album - ", "")),
             filterChars(info_dict["entries"][0]["uploader"]),
             2020,
-            tracks,
+            getTrackListFromEntriesJson(info_dict["entries"]),
+            info_dict["thumbnails"][1]["url"],
         )
 
-    return album
-
-
-def prepare_directory(path: str):
-    if os.path.exists(path):
-        shutil.rmtree(path)
-    os.makedirs(path)
+    raise Exception("Could not get album info from ytdlp")
 
 
 def createDirsFromFolderWithAlbum(folder: str, album: Album):
     if not os.path.exists(os.path.join(folder, album.artist)):
         os.makedirs(os.path.join(folder, album.artist))
 
-    prepare_directory(os.path.join(folder, album.artist, album.album))
+    albumPath = os.path.join(folder, album.artist, album.album)
+    if os.path.exists(albumPath):
+        shutil.rmtree(albumPath)
+    os.makedirs(albumPath)
 
-def download_audio(track_url, folder, track_title):
-    # Set the options for yt-dlp
-    ydl_opts = {
-        'format': 'bestaudio/best',  # Choose the best audio format
-        'postprocessors': [{
-            'key': 'FFmpegAudioConvertor',
-            'preferredcodec': 'mp3',  # Convert audio to mp3
-            'preferredquality': '192',  # Set audio quality
-        }],
-        'outtmpl': f'{folder}/{track_title}.%(ext)s',  # Output template for file path
-    }
 
-    ydl_opts = {
-        'format': 'bestaudio/best',  # Choose the best audio format
-        'postprocessors': [{
-            'key': 'FFmpegExtractAudio',
-            'preferredcodec': 'mp3',
-        }],
-        'outtmpl': f'{folder}/{track_title}.%(ext)s',  # Output template for file path
-    }
-
-    # Download the track using yt-dlp
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        ydl.download([track_url])
-
-def download_and_assign_metadata_to_track(
-    folder: str, album: Album, track: Track, index: int
-):
-    print(f"Name: {track.title}, Url: {track.url}, index: {index}")
-
-    # Download video
+def download_content_to_folder(track_url, folder, track_title):
     current_directory = os.getcwd()
     os.system(f"cd '{folder}'")
 
-    download_audio(track.url, folder, track.title)
+    ydl_opts = {
+        "format": "bestaudio/best",
+        "postprocessors": [
+            {
+                "key": "FFmpegExtractAudio",
+                "preferredcodec": "mp3",
+            }
+        ],
+        "outtmpl": f"{folder}/{track_title}.%(ext)s",
+    }
 
-    print(command)
-    os.system(command)
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        ydl.download([track_url])
+
     os.system(f"cd '{current_directory}'")
 
-    # Assign metadata
-    audio_file = os.path.join(folder, f"{track.title}.mp3")
-    tracknumer = index + 1
 
-    audio = EasyID3(audio_file)
+def writeTextMetadataToExistingFile(album: Album, track: Track, file: str):
+    if not os.path.exists(file):
+        raise Exception(f"File for track {track}, at {file} doesn't exist")
 
+    audio = EasyID3(file)
     audio.delete()
     audio["title"] = track.title
     audio["album"] = album.album
     audio["artist"] = album.artist
-    audio["tracknumber"] = str(tracknumer)
+    audio["tracknumber"] = str(track.index)
     audio.save()
 
-    # Set Cover art
-    id3audio = MP3(audio_file, ID3=ID3)
+
+def writeCoverArtToExistingFile(coverArtFile: str, file: str):
+    if not os.path.exists(file):
+        raise Exception(f"File for track {file} doesn't exist")
+
+    if not os.path.exists(coverArtFile):
+        raise Exception("Cover art file doesn't exit")
+
+    id3audio = MP3(file, ID3=ID3)
     id3audio_tags: mutagen.id3.ID3 = id3audio.tags
     id3audio_tags.add(
         APIC(
             mime="image/jpeg",
             type=3,
             desc="Cover",
-            data=open(os.path.join(folder, "cover.jpg"), "rb").read(),
+            data=open(coverArtFile, "rb").read(),
         )
     )
     id3audio.save()
 
 
-def main():
-    download_start_time = time.time()
+def downloadTrackAndWriteMetadata(albumFolder: str, album: Album, track: Track):
+    download_content_to_folder(track.url, albumFolder, track.title)
 
-    #url = sys.argv[1]
+    trackFile = os.path.join(albumFolder, f"{track.title}.mp3")
+    writeTextMetadataToExistingFile(album, track, trackFile)
 
-    url = 'https://music.youtube.com/playlist?list=OLAK5uy_lJvbSWPW4g9-u1Cs1I1zkfylSG0KBFpOo'
-    folder = os.path.join(os.path.expanduser("~"), "MusicT")
-    #if len(sys.argv) > 2:
-    #    folder = sys.argv[2]
+    coverArtFile = os.path.join(albumFolder, "cover.jpg")
+    writeCoverArtToExistingFile(coverArtFile, trackFile)
 
-    album = getAlbumFromURL(url)
-    cover_art_url = getCoverArtUrlFromUrl(url)
 
-    createDirsFromFolderWithAlbum(folder, album)
-    album_folder = os.path.join(folder, album.artist, album.album)
+HOME_MUSIC_FOLDER = os.path.join(os.path.expanduser("~"), "MusicT")
+TESTING_URL = (
+    r"https://music.youtube.com/playlist?list=OLAK5uy_lJvbSWPW4g9-u1Cs1I1zkfylSG0KBFpOo"
+)
 
-    downloadCoverArtToFolder(cover_art_url, album_folder)
 
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        for i, track in enumerate(album.tracks):
-            executor.submit(
-                download_and_assign_metadata_to_track, album_folder, album, track, i
-            )
+class AlbumDownloader:
+    def __init__(self, url: str = TESTING_URL, folder: str = HOME_MUSIC_FOLDER):
+        self.url = url
+        self.folder = folder
 
-    download_time = time.time() - download_start_time
-    print(f"Download took {download_time:.2f} seconds")
+    def download(self):
+        download_start_time = time.time()
 
+        album = getAlbumFromURL(self.url)
+
+        createDirsFromFolderWithAlbum(self.folder, album)
+        album_folder = os.path.join(self.folder, album.artist, album.album)
+
+        downloadCoverArtToFolder(album.coverArtUrl, album_folder)
+
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            for track in album.tracks:
+                executor.submit(
+                    downloadTrackAndWriteMetadata, album_folder, album, track
+                )
+
+        download_time = time.time() - download_start_time
+        print(f"Download took {download_time:.2f} seconds")
