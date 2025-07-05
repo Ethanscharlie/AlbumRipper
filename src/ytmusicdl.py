@@ -149,16 +149,6 @@ def writeCoverArtToExistingFile(coverArtFile: str, file: str):
     id3audio.save()
 
 
-def downloadTrackAndWriteMetadata(albumFolder: str, album: Album, track: Track):
-    download_content_to_folder(track.url, albumFolder, track.title)
-
-    trackFile = os.path.join(albumFolder, f"{track.title}.mp3")
-    writeTextMetadataToExistingFile(album, track, trackFile)
-
-    coverArtFile = os.path.join(albumFolder, "cover.jpg")
-    writeCoverArtToExistingFile(coverArtFile, trackFile)
-
-
 HOME_MUSIC_FOLDER = os.path.join(os.path.expanduser("~"), "MusicT")
 TESTING_URL = (
     r"https://music.youtube.com/playlist?list=OLAK5uy_lJvbSWPW4g9-u1Cs1I1zkfylSG0KBFpOo"
@@ -170,10 +160,16 @@ class AlbumDownloader:
         self.url = url
         self.folder = folder
 
+        self.finishedDownloading = 0
+        self.totalToDownload = 0
+
     def download(self):
         download_start_time = time.time()
+        self.finishedDownloading = 0
+        self.totalToDownload = 0
 
         album = getAlbumFromURL(self.url)
+        self.totalToDownload = len(album.tracks)
 
         createDirsFromFolderWithAlbum(self.folder, album)
         album_folder = os.path.join(self.folder, album.artist, album.album)
@@ -183,8 +179,30 @@ class AlbumDownloader:
         with concurrent.futures.ThreadPoolExecutor() as executor:
             for track in album.tracks:
                 executor.submit(
-                    downloadTrackAndWriteMetadata, album_folder, album, track
+                    self.__downloadTrackAndWriteMetadata, album_folder, album, track
                 )
 
         download_time = time.time() - download_start_time
         print(f"Download took {download_time:.2f} seconds")
+
+    def getStatus(self) -> float:
+        if self.finishedDownloading == 0:
+            return 0
+
+        if self.totalToDownload == 0:
+            return 0
+
+        return self.finishedDownloading / self.totalToDownload
+
+    def __downloadTrackAndWriteMetadata(
+        self, albumFolder: str, album: Album, track: Track
+    ):
+        download_content_to_folder(track.url, albumFolder, track.title)
+
+        trackFile = os.path.join(albumFolder, f"{track.title}.mp3")
+        writeTextMetadataToExistingFile(album, track, trackFile)
+
+        coverArtFile = os.path.join(albumFolder, "cover.jpg")
+        writeCoverArtToExistingFile(coverArtFile, trackFile)
+
+        self.finishedDownloading += 1
