@@ -54,24 +54,18 @@ def downloadCoverArtToFolder(url: str, folder: str):
     urllib.request.urlretrieve(url, os.path.join(folder, "cover.jpg"))
 
 def getCoverArtUrlFromUrl(url: str) -> str:
-    art_url = r"https://i9.ytimg.com/s_p/OLAK5uy_lJvbSWPW4g9-u1Cs1I1zkfylSG0KBFpOo/sddefault.jpg?sqp=CMiJosMGir7X7AMICJzHuL0GEAE=&rs=AOn4CLCnVEDk2attTi_T3Er6zf557N6NqA&v=1739465628"
+    art_url = ""
 
-    # os.system(f"yt-dlp {url} --write-info-json --flat-playlist")
-    # TODO
+    ydl_opts = {
+        'quiet': True,  # Suppress standard output
+        'extract_flat': True,  # Equivalent to --flat-playlist
+        'force_generic_extractor': True,  # Ensure it's using the generic extractor if necessary
+    }
 
-    #filepath = ""
-    #for file in os.listdir("."):
-    #    if not file.endswith(".info.json"):
-    #        continue
-#j
-    #    filepath = file
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        info_dict = ydl.extract_info(url, download=False)
+        art_url = info_dict["thumbnails"][1]["url"]
 
-    #with open(filepath, "r") as f:
-    #    data = json.loads(f.read())
-    #    cover_art_url = data["thumbnails"][1]["url"]
-    #    art_url = cover_art_url
-
-    #os.remove(filepath)
     return art_url
 
 
@@ -118,6 +112,30 @@ def createDirsFromFolderWithAlbum(folder: str, album: Album):
 
     prepare_directory(os.path.join(folder, album.artist, album.album))
 
+def download_audio(track_url, folder, track_title):
+    # Set the options for yt-dlp
+    ydl_opts = {
+        'format': 'bestaudio/best',  # Choose the best audio format
+        'postprocessors': [{
+            'key': 'FFmpegAudioConvertor',
+            'preferredcodec': 'mp3',  # Convert audio to mp3
+            'preferredquality': '192',  # Set audio quality
+        }],
+        'outtmpl': f'{folder}/{track_title}.%(ext)s',  # Output template for file path
+    }
+
+    ydl_opts = {
+        'format': 'bestaudio/best',  # Choose the best audio format
+        'postprocessors': [{
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'mp3',
+        }],
+        'outtmpl': f'{folder}/{track_title}.%(ext)s',  # Output template for file path
+    }
+
+    # Download the track using yt-dlp
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        ydl.download([track_url])
 
 def download_and_assign_metadata_to_track(
     folder: str, album: Album, track: Track, index: int
@@ -128,9 +146,8 @@ def download_and_assign_metadata_to_track(
     current_directory = os.getcwd()
     os.system(f"cd '{folder}'")
 
-    command = (
-        f'yt-dlp -x --audio-format mp3 -o "{folder}/{track.title}.%(ext)s" {track.url}'
-    )
+    download_audio(track.url, folder, track.title)
+
     print(command)
     os.system(command)
     os.system(f"cd '{current_directory}'")
