@@ -23,6 +23,7 @@
         "*.a"
     ],
     "modules" : [
+	"python3-requests.json",
         {
             "name" : "ytmusicripper",
             "builddir" : true,
