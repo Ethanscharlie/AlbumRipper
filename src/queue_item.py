@@ -30,9 +30,9 @@ class QueueItem(Adw.PreferencesGroup):
     action_row = Gtk.Template.Child("action_row")
     status_label = Gtk.Template.Child()
 
-    def __init__(self, **kwargs):
+    def __init__(self, url, **kwargs):
         super().__init__(**kwargs)
-        downloader = AlbumDownloader(self.action_row, self.status_label)
+        downloader = AlbumDownloader(self.action_row, self.status_label, url)
         threading.Thread(target=downloader.download).start()
 
 

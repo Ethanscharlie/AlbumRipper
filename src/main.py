@@ -42,14 +42,6 @@ class YtmusicripperApplication(Adw.Application):
         self.create_action('preferences', self.on_preferences_action)
         self.create_action('rip', self.on_rip)
 
-    def test_add_element(self):
-        win = self.props.active_window
-        if not win or not hasattr(win, 'queue_container'):
-            print("No queue container found!")
-            return
-
-        win.queue_container.add(QueueItem())
-
     def on_rip(self, *args):
         win = self.props.active_window
         if not win or not hasattr(win, 'url_entry'):
@@ -59,7 +51,9 @@ class YtmusicripperApplication(Adw.Application):
         url = win.url_entry.get_text()
         print(f"Entry says: {url}")
 
-        self.test_add_element()
+        win.queue_container.add(QueueItem(url))
+
+        win.url_entry.set_text("")
 
 
     def do_activate(self):
