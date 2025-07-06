@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=ytmusicripper
 Exec=ytmusicripper
-Icon=org.hadley.ytmusicripper
+Icon=io.github.ethanscharlie.ytmusicripper
 Terminal=false
 Type=Application
 Categories=Utility;

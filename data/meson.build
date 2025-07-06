@@ -1,6 +1,6 @@
 desktop_file = i18n.merge_file(
-        input: 'org.hadley.ytmusicripper.desktop.in',
-       output: 'org.hadley.ytmusicripper.desktop',
+        input: 'io.github.ethanscharlie.ytmusicripper.desktop.in',
+       output: 'io.github.ethanscharlie.ytmusicripper.desktop',
          type: 'desktop',
        po_dir: '../po',
       install: true,
@@ -13,8 +13,8 @@ if desktop_utils.found()
 endif
 
 appstream_file = i18n.merge_file(
-        input: 'org.hadley.ytmusicripper.metainfo.xml.in',
-       output: 'org.hadley.ytmusicripper.metainfo.xml',
+        input: 'io.github.ethanscharlie.ytmusicripper.metainfo.xml.in',
+       output: 'io.github.ethanscharlie.ytmusicripper.metainfo.xml',
        po_dir: '../po',
       install: true,
   install_dir: get_option('datadir') / 'metainfo'
@@ -24,7 +24,7 @@ appstreamcli = find_program('appstreamcli', required: false, disabler: true)
 test('Validate appstream file', appstreamcli,
      args: ['validate', '--no-net', '--explain', appstream_file])
 
-install_data('org.hadley.ytmusicripper.gschema.xml',
+install_data('io.github.ethanscharlie.ytmusicripper.gschema.xml',
   install_dir: get_option('datadir') / 'glib-2.0' / 'schemas'
 )
 
@@ -37,8 +37,8 @@ test('Validate schema file',
 service_conf = configuration_data()
 service_conf.set('bindir', get_option('prefix') / get_option('bindir'))
 configure_file(
-  input: 'org.hadley.ytmusicripper.service.in',
-  output: 'org.hadley.ytmusicripper.service',
+  input: 'io.github.ethanscharlie.ytmusicripper.service.in',
+  output: 'io.github.ethanscharlie.ytmusicripper.service',
   configuration: service_conf,
   install_dir: get_option('datadir') / 'dbus-1' / 'services'
 )

@@ -35,9 +35,9 @@ class YtmusicripperApplication(Adw.Application):
     """The main application singleton class."""
 
     def __init__(self):
-        super().__init__(application_id='org.hadley.ytmusicripper',
+        super().__init__(application_id='io.github.ethanscharlie.ytmusicripper',
                          flags=Gio.ApplicationFlags.DEFAULT_FLAGS,
-                         resource_base_path='/org/hadley/ytmusicripper')
+                         resource_base_path='/io/github/ethanscharlie/ytmusicripper')
         self.create_action('quit', lambda *_: self.quit(), ['<primary>q'])
         self.create_action('about', self.on_about_action)
         self.create_action('preferences', self.on_preferences_action)
@@ -75,7 +75,7 @@ class YtmusicripperApplication(Adw.Application):
     def on_about_action(self, *args):
         """Callback for the app.about action."""
         about = Adw.AboutDialog(application_name='ytmusicripper',
-                                application_icon='org.hadley.ytmusicripper',
+                                application_icon='io.github.ethanscharlie.ytmusicripper',
                                 developer_name='Ethanscharlie',
                                 version='1.0.0',
                                 developers=['Ethanscharlie'],
