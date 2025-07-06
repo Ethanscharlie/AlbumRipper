@@ -76,10 +76,10 @@ class YtmusicripperApplication(Adw.Application):
         """Callback for the app.about action."""
         about = Adw.AboutDialog(application_name='ytmusicripper',
                                 application_icon='org.hadley.ytmusicripper',
-                                developer_name='Unknown',
-                                version='0.1.0',
-                                developers=['Unknown'],
-                                copyright='© 2025 Unknown')
+                                developer_name='Ethanscharlie',
+                                version='1.0.0',
+                                developers=['Ethanscharlie'],
+                                copyright='© 2025 Ethanscharlie')
         # Translators: Replace "translator-credits" with your name/username, and optionally an email or URL.
         about.set_translator_credits(_('translator-credits'))
         about.present(self.props.active_window)
