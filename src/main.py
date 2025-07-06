@@ -81,7 +81,7 @@ class YtmusicripperApplication(Adw.Application):
                                 developers=['Ethanscharlie'],
                                 copyright='© 2025 Ethanscharlie')
         # Translators: Replace "translator-credits" with your name/username, and optionally an email or URL.
-        about.set_translator_credits(_('translator-credits'))
+        about.set_translator_credits(_('https://github.com/Ethanscharlie'))
         about.present(self.props.active_window)
 
     def on_preferences_action(self, widget, _):
