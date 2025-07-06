@@ -1,3 +1,3 @@
-# ytmusicripper
+# YTMusic Ripper
 
-A description of this project.
+Download albums from YouTube Music with metadata
