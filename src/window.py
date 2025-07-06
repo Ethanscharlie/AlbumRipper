@@ -28,6 +28,7 @@ class YtmusicripperWindow(Adw.ApplicationWindow):
 
     url_entry = Gtk.Template.Child()
     queue_container = Gtk.Template.Child("queue_container")
+    download_folder_combo = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

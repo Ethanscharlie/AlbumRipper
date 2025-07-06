@@ -20,6 +20,7 @@
 import sys
 import gi
 import threading
+import os
 
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
@@ -51,7 +52,10 @@ class YtmusicripperApplication(Adw.Application):
         url = win.url_entry.get_text()
         print(f"Entry says: {url}")
 
-        win.queue_container.add(QueueItem(url))
+        folder_raw = win.download_folder_combo.get_selected_item().get_string()
+        folder = os.path.join(os.path.expanduser("~"), folder_raw.replace(r"~/", ""))
+
+        win.queue_container.add(QueueItem(url, folder))
 
         win.url_entry.set_text("")
 

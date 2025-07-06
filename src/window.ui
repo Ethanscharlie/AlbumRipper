@@ -32,8 +32,26 @@
                 <property name="orientation">vertical</property>
                 <property name="spacing">10</property>
                 <child>
-                  <object class="AdwEntryRow" id="url_entry">
-                    <property name="title" translatable="yes">URL</property>
+                  <object class="AdwPreferencesGroup">
+                    <property name="title">Entry</property>
+                    <child>
+                      <object class="AdwComboRow" id="download_folder_combo">
+                        <property name="title" translatable="yes">Download Folder</property>
+                        <property name="model">
+                          <object class="GtkStringList">
+                            <items>
+                              <item translatable="yes">~/Downloads</item>
+                              <item translatable="yes">~/Music</item>
+                            </items>
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="AdwEntryRow" id="url_entry">
+                        <property name="title" translatable="yes">URL</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
                 <child>

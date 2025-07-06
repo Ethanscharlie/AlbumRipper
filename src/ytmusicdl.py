@@ -190,7 +190,7 @@ class AlbumDownloader:
             return
 
         self.action_row.set_title(album.album)
-        self.action_row.set_subtitle(album.artist)
+        self.action_row.set_subtitle(f"{album.artist} * {self.folder}")
         self.totalToDownload = len(album.tracks)
 
         self.status_label.set_label("Creating Dirs")
