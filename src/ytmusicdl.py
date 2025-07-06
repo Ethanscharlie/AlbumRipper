@@ -176,7 +176,19 @@ class AlbumDownloader:
 
         self.status_label.set_label("Getting album info")
 
-        album = getAlbumFromURL(self.url)
+        try:
+            album = getAlbumFromURL(self.url)
+        except yt_dlp.utils.ExtractorError:
+            self.action_row.set_title(f"Invalid url: {self.url}")
+            self.action_row.set_subtitle("Extractor Error")
+            self.status_label.set_label("Failed")
+            return
+        except yt_dlp.utils.DownloadError:
+            self.action_row.set_title(f"Invalid url: {self.url}")
+            self.action_row.set_subtitle("Download Error")
+            self.status_label.set_label("Failed")
+            return
+
         self.action_row.set_title(album.album)
         self.action_row.set_subtitle(album.artist)
         self.totalToDownload = len(album.tracks)
