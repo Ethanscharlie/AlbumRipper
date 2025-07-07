@@ -49,7 +49,7 @@
                     </child>
                     <child>
                       <object class="AdwEntryRow" id="url_entry">
-                        <property name="title" translatable="yes">URL</property>
+                        <property name="title" translatable="yes">URL https://music.youtube.com/playlist?li...</property>
                       </object>
                     </child>
                   </object>
