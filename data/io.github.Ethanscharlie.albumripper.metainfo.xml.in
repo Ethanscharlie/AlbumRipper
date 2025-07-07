@@ -55,7 +55,7 @@
 
   <releases>
     <release version="1.0.2" date="2024-01-18">
-      <url type="details">https://example.org/changelog.html#version_1.0.1</url>
+      <url type="details">https://example.org/changelog.html#version_1.0.3</url>
       <description translate="no">
         <p>Got Ready For Flathub</p>
         <ul>
