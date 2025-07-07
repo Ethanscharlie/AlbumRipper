@@ -13,6 +13,7 @@ from dataclasses import dataclass
 import time
 import sys
 import urllib
+from urllib.parse import urlparse
 
 import mutagen
 from mutagen.easyid3 import EasyID3
@@ -179,6 +180,16 @@ class AlbumDownloader:
         self.totalToDownload = 0
 
         self.status_label.set_label("Getting album info")
+
+        parsedUrl = urlparse(self.url)
+        hostname = parsedUrl.hostname or ""
+        isCorrectDomain = "music.youtube.com" in hostname.lower()
+
+        if not isCorrectDomain:
+            self.action_row.set_title(f"Invalid url: {self.url}")
+            self.action_row.set_subtitle("URL not from music.youtube.com")
+            self.status_label.set_label("Failed")
+            return
 
         try:
             album = getAlbumFromURL(self.url)
