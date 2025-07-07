@@ -80,7 +80,7 @@ class AlbumRipperApplication(Adw.Application):
             application_name="albumripper",
             application_icon="io.github.Ethanscharlie.albumripper",
             developer_name="Ethanscharlie",
-            version="1.0.4",
+            version="1.1.0",
             developers=["Ethanscharlie"],
             copyright="© 2025 Ethanscharlie",
         )
