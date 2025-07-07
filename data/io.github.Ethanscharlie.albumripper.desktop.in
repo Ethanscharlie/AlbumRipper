@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Album Ripper
-Exec=Album Ripper
+Exec=albumripper
 Icon=io.github.Ethanscharlie.albumripper
 Terminal=false
 Type=Application
