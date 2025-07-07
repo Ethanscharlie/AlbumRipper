@@ -1,4 +1,4 @@
-application_id = 'io.github.Ethanscharlie.ytmusicripper'
+application_id = 'io.github.Ethanscharlie.albumripper'
 
 scalable_dir = 'hicolor' / 'scalable' / 'apps'
 install_data(

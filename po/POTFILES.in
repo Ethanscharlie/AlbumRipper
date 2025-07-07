@@ -1,8 +1,8 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
-data/io.github.Ethanscharlie.ytmusicripper.desktop.in
-data/io.github.Ethanscharlie.ytmusicripper.metainfo.xml.in
-data/io.github.Ethanscharlie.ytmusicripper.gschema.xml
+data/io.github.Ethanscharlie.albumripper.desktop.in
+data/io.github.Ethanscharlie.albumripper.metainfo.xml.in
+data/io.github.Ethanscharlie.albumripper.gschema.xml
 src/main.py
 src/window.py
 src/window.ui

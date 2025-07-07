@@ -23,16 +23,17 @@ from gi.repository import Gtk
 from .ytmusicdl import AlbumDownloader
 import threading
 
-@Gtk.Template(resource_path='/org/hadley/ytmusicripper/queue_item.ui')
+
+@Gtk.Template(resource_path="/io/github/Ethanscharlie/albumripper/queue_item.ui")
 class QueueItem(Adw.PreferencesGroup):
-    __gtype_name__ = 'queue_item'
+    __gtype_name__ = "queue_item"
 
     action_row = Gtk.Template.Child("action_row")
     status_label = Gtk.Template.Child()
 
     def __init__(self, url: str, download_folder: str, **kwargs):
         super().__init__(**kwargs)
-        downloader = AlbumDownloader(self.action_row, self.status_label, url, download_folder)
+        downloader = AlbumDownloader(
+            self.action_row, self.status_label, url, download_folder
+        )
         threading.Thread(target=downloader.download).start()
-
-

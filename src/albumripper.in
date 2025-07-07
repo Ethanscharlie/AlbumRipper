@@ -1,6 +1,6 @@
 #!@PYTHON@
 
-# ytmusicripper.in
+# albumripper.in
 #
 # Copyright 2025 Unknown
 #
@@ -31,16 +31,16 @@ localedir = '@localedir@'
 
 sys.path.insert(1, pkgdatadir)
 signal.signal(signal.SIGINT, signal.SIG_DFL)
-locale.bindtextdomain('ytmusicripper', localedir)
-locale.textdomain('ytmusicripper')
-gettext.install('ytmusicripper', localedir)
+locale.bindtextdomain('albumripper', localedir)
+locale.textdomain('albumripper')
+gettext.install('albumripper', localedir)
 
 if __name__ == '__main__':
     import gi
 
     from gi.repository import Gio
-    resource = Gio.Resource.load(os.path.join(pkgdatadir, 'ytmusicripper.gresource'))
+    resource = Gio.Resource.load(os.path.join(pkgdatadir, 'albumripper.gresource'))
     resource._register()
 
-    from ytmusicripper import main
+    from albumripper import main
     sys.exit(main.main(VERSION))

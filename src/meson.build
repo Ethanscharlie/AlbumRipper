@@ -1,9 +1,9 @@
 pkgdatadir = get_option('prefix') / get_option('datadir') / meson.project_name()
-moduledir = pkgdatadir / 'ytmusicripper'
+moduledir = pkgdatadir / 'albumripper'
 gnome = import('gnome')
 
-gnome.compile_resources('ytmusicripper',
-  'ytmusicripper.gresource.xml',
+gnome.compile_resources('albumripper',
+  'albumripper.gresource.xml',
   gresource_bundle: true,
   install: true,
   install_dir: pkgdatadir,
@@ -18,15 +18,15 @@ conf.set('localedir', get_option('prefix') / get_option('localedir'))
 conf.set('pkgdatadir', pkgdatadir)
 
 configure_file(
-  input: 'ytmusicripper.in',
-  output: 'ytmusicripper',
+  input: 'albumripper.in',
+  output: 'albumripper',
   configuration: conf,
   install: true,
   install_dir: get_option('bindir'),
   install_mode: 'r-xr-xr-x'
 )
 
-ytmusicripper_sources = [
+albumripper_sources = [
   '__init__.py',
   'main.py',
   'window.py',
@@ -34,4 +34,4 @@ ytmusicripper_sources = [
   'queue_item.py'
 ]
 
-install_data(ytmusicripper_sources, install_dir: moduledir)
+install_data(albumripper_sources, install_dir: moduledir)

@@ -1,4 +1,4 @@
-<h1><img align="center" width="70" src="data/icons/hicolor/scalable/apps/io.github.ethanscharlie.ytmusicripper.svg">   YTMusic Ripper</h1>
+<h1><img align="center" width="70" src="data/icons/hicolor/scalable/apps/io.github.ethanscharlie.albumripper.svg">   Album Ripper</h1>
 
 Download albums from YouTube Music with metadata
 

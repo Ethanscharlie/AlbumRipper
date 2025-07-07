@@ -1,1 +1,1 @@
-i18n.gettext('ytmusicripper', preset: 'glib')
+i18n.gettext('albumripper', preset: 'glib')

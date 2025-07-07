@@ -22,9 +22,10 @@ from gi.repository import Gtk
 
 from .queue_item import QueueItem
 
-@Gtk.Template(resource_path='/org/hadley/ytmusicripper/window.ui')
-class YtmusicripperWindow(Adw.ApplicationWindow):
-    __gtype_name__ = 'YtmusicripperWindow'
+
+@Gtk.Template(resource_path="/io/github/Ethanscharlie/albumripper/window.ui")
+class AlbumRipperWindow(Adw.ApplicationWindow):
+    __gtype_name__ = "AlbumRipperWindow"
 
     url_entry = Gtk.Template.Child()
     queue_container = Gtk.Template.Child("queue_container")

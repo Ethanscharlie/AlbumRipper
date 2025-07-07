@@ -26,20 +26,20 @@ gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 
 from gi.repository import Gtk, Gio, Adw
-from .window import YtmusicripperWindow
+from .window import AlbumRipperWindow
 
 from .ytmusicdl import AlbumDownloader
 from .queue_item import QueueItem
 
 
-class YtmusicripperApplication(Adw.Application):
+class AlbumRipperApplication(Adw.Application):
     """The main application singleton class."""
 
     def __init__(self):
         super().__init__(
-            application_id="io.github.Ethanscharlie.ytmusicripper",
+            application_id="io.github.Ethanscharlie.albumripper",
             flags=Gio.ApplicationFlags.DEFAULT_FLAGS,
-            resource_base_path="/io/github/Ethanscharlie/ytmusicripper",
+            resource_base_path="/io/github/Ethanscharlie/albumripper",
         )
         self.create_action("quit", lambda *_: self.quit(), ["<primary>q"])
         self.create_action("about", self.on_about_action)
@@ -71,14 +71,14 @@ class YtmusicripperApplication(Adw.Application):
 
         win = self.props.active_window
         if not win:
-            win = YtmusicripperWindow(application=self)
+            win = AlbumRipperWindow(application=self)
         win.present()
 
     def on_about_action(self, *args):
         """Callback for the app.about action."""
         about = Adw.AboutDialog(
-            application_name="ytmusicripper",
-            application_icon="io.github.Ethanscharlie.ytmusicripper",
+            application_name="albumripper",
+            application_icon="io.github.Ethanscharlie.albumripper",
             developer_name="Ethanscharlie",
             version="1.0.0",
             developers=["Ethanscharlie"],
@@ -110,5 +110,5 @@ class YtmusicripperApplication(Adw.Application):
 
 def main(version):
     """The application's entry point."""
-    app = YtmusicripperApplication()
+    app = AlbumRipperApplication()
     return app.run(sys.argv)

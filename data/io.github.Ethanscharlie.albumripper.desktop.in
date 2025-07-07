@@ -1,7 +1,7 @@
 [Desktop Entry]
-Name=YTMusic Ripper
-Exec=YTMusic Ripper
-Icon=io.github.Ethanscharlie.ytmusicripper
+Name=Album Ripper
+Exec=Album Ripper
+Icon=io.github.Ethanscharlie.albumripper
 Terminal=false
 Type=Application
 Categories=Utility;
