@@ -22,8 +22,8 @@ import gi
 import threading
 import os
 
-gi.require_version('Gtk', '4.0')
-gi.require_version('Adw', '1')
+gi.require_version("Gtk", "4.0")
+gi.require_version("Adw", "1")
 
 from gi.repository import Gtk, Gio, Adw
 from .window import YtmusicripperWindow
@@ -31,21 +31,24 @@ from .window import YtmusicripperWindow
 from .ytmusicdl import AlbumDownloader
 from .queue_item import QueueItem
 
+
 class YtmusicripperApplication(Adw.Application):
     """The main application singleton class."""
 
     def __init__(self):
-        super().__init__(application_id='io.github.ethanscharlie.ytmusicripper',
-                         flags=Gio.ApplicationFlags.DEFAULT_FLAGS,
-                         resource_base_path='/io/github/ethanscharlie/ytmusicripper')
-        self.create_action('quit', lambda *_: self.quit(), ['<primary>q'])
-        self.create_action('about', self.on_about_action)
-        self.create_action('preferences', self.on_preferences_action)
-        self.create_action('rip', self.on_rip)
+        super().__init__(
+            application_id="io.github.Ethanscharlie.ytmusicripper",
+            flags=Gio.ApplicationFlags.DEFAULT_FLAGS,
+            resource_base_path="/io/github/Ethanscharlie/ytmusicripper",
+        )
+        self.create_action("quit", lambda *_: self.quit(), ["<primary>q"])
+        self.create_action("about", self.on_about_action)
+        self.create_action("preferences", self.on_preferences_action)
+        self.create_action("rip", self.on_rip)
 
     def on_rip(self, *args):
         win = self.props.active_window
-        if not win or not hasattr(win, 'url_entry'):
+        if not win or not hasattr(win, "url_entry"):
             print("No entry field found!")
             return
 
@@ -58,7 +61,6 @@ class YtmusicripperApplication(Adw.Application):
         win.queue_container.add(QueueItem(url, folder))
 
         win.url_entry.set_text("")
-
 
     def do_activate(self):
         """Called when the application is activated.
@@ -74,19 +76,21 @@ class YtmusicripperApplication(Adw.Application):
 
     def on_about_action(self, *args):
         """Callback for the app.about action."""
-        about = Adw.AboutDialog(application_name='ytmusicripper',
-                                application_icon='io.github.ethanscharlie.ytmusicripper',
-                                developer_name='Ethanscharlie',
-                                version='1.0.0',
-                                developers=['Ethanscharlie'],
-                                copyright='© 2025 Ethanscharlie')
+        about = Adw.AboutDialog(
+            application_name="ytmusicripper",
+            application_icon="io.github.Ethanscharlie.ytmusicripper",
+            developer_name="Ethanscharlie",
+            version="1.0.0",
+            developers=["Ethanscharlie"],
+            copyright="© 2025 Ethanscharlie",
+        )
         # Translators: Replace "translator-credits" with your name/username, and optionally an email or URL.
-        about.set_translator_credits(_('https://github.com/Ethanscharlie'))
+        about.set_translator_credits(_("https://github.com/Ethanscharlie"))
         about.present(self.props.active_window)
 
     def on_preferences_action(self, widget, _):
         """Callback for the app.preferences action."""
-        print('app.preferences action activated')
+        print("app.preferences action activated")
 
     def create_action(self, name, callback, shortcuts=None):
         """Add an application action.

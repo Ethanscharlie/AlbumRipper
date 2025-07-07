@@ -1,5 +1,5 @@
 {
-    "id" : "io.github.ethanscharlie.ytmusicripper",
+    "id" : "io.github.Ethanscharlie.ytmusicripper",
     "runtime" : "org.gnome.Platform",
     "runtime-version" : "47",
     "sdk" : "org.gnome.Sdk",

@@ -158,7 +158,11 @@ TESTING_URL = (
 
 class AlbumDownloader:
     def __init__(
-        self, action_row, status_label, url: str = TESTING_URL, folder: str = HOME_MUSIC_FOLDER
+        self,
+        action_row,
+        status_label,
+        url: str = TESTING_URL,
+        folder: str = HOME_MUSIC_FOLDER,
     ):
         self.action_row = action_row
         self.status_label = status_label
@@ -227,4 +231,6 @@ class AlbumDownloader:
 
         self.finishedDownloading += 1
 
-        self.status_label.set_label(f"Downloading content {self.finishedDownloading}/{self.totalToDownload}")
+        self.status_label.set_label(
+            f"Downloading content {self.finishedDownloading}/{self.totalToDownload}"
+        )
