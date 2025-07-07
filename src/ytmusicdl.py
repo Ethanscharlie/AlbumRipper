@@ -23,6 +23,10 @@ from mutagen.id3 import ID3, APIC
 import yt_dlp
 
 
+class URLIsNotAlbum(Exception):
+    pass
+
+
 @dataclass
 class Track:
     title: str
@@ -74,6 +78,9 @@ def getAlbumFromURL(url: str) -> Album:
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info_dict = ydl.extract_info(url, download=False)
+
+        if not "entries" in info_dict:
+            raise URLIsNotAlbum("No entries key found")
 
         return Album(
             filterChars(info_dict["title"].replace("Album - ", "")),
@@ -193,6 +200,11 @@ class AlbumDownloader:
 
         try:
             album = getAlbumFromURL(self.url)
+        except URLIsNotAlbum:
+            self.action_row.set_title(f"Invalid url: {self.url}")
+            self.action_row.set_subtitle("URL is not an album")
+            self.status_label.set_label("Failed")
+            return
         except yt_dlp.utils.ExtractorError:
             self.action_row.set_title(f"Invalid url: {self.url}")
             self.action_row.set_subtitle("Extractor Error")
