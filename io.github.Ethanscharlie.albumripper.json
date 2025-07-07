@@ -32,7 +32,7 @@
                 {
                     "type" : "git",
                     "url" : "https://github.com/Ethanscharlie/albumripper.git",
-        	    "tag": "v1.0.1"
+        	    "tag": "v1.0.2"
                 }
             ]
         }
