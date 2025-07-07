@@ -9,8 +9,7 @@
         "--share=ipc",
         "--socket=fallback-x11",
         "--device=dri",
-        "--socket=wayland",
-        "--filesystem=home"
+        "--socket=wayland"
     ],
     "cleanup" : [
         "/include",
@@ -32,8 +31,8 @@
             "sources" : [
                 {
                     "type" : "git",
-                    "url" : "file:///home/ethanscharlie/Documents/Projects/Code/GTK/YTMusicRipper/",
-        	    "branch": "main"
+                    "url" : "https://github.com/Ethanscharlie/YTMusicRipper.git",
+        	    "tag": "v1.0.1"
                 }
             ]
         }
