@@ -7,7 +7,7 @@
       <bx:file format="svg" href="#object-0" path="Untitled 2.svg"/>
     </bx:export>
   </defs>
-  <g>
+  <g style="transform-origin: 132.226px 127.755px;" transform="matrix(0.79923, 0, 0, 0.79923, -4.225952, 0.244625)">
     <ellipse style="stroke: rgba(0, 0, 0, 0); stroke-width: 1; fill: rgb(118, 44, 44);" cx="129.7" cy="132.7" rx="121.372" ry="122.245"/>
     <ellipse style="stroke: rgba(0, 0, 0, 0); fill: rgb(192, 73, 73);" cx="129.728" cy="125.248" rx="121.372" ry="122.245"/>
     <g>
@@ -31,5 +31,5 @@
       </g>
     </g>
   </g>
-  <path d="M 122.614 98.362 H 158.315 L 158.315 81.362 L 207.315 112.862 L 158.315 144.362 L 158.315 127.362 H 122.614 V 98.362 Z" bx:shape="arrow 122.614 81.362 84.701 63 29 49 0 1@3c4a3361" style="stroke: rgba(0, 0, 0, 0); fill: rgb(255, 255, 255);" transform="matrix(0, 1, -1, 0, 242.722778, -63.404411)"/>
+  <path d="M 97.997 78.614 H 126.531 L 126.531 65.027 L 165.693 90.203 L 126.531 115.378 L 126.531 101.792 H 97.997 V 78.614 Z" bx:shape="arrow 97.997 65.027 67.696 50.351 23.178 39.162 0 1@894806d5" style="stroke: rgba(0, 0, 0, 0); fill: rgb(255, 255, 255); transform-origin: 152.781px 88.3127px;" transform="matrix(0, 1, -1, 0, -24.780601, 39.68684)"/>
 </svg>
