@@ -48,18 +48,21 @@
 
   <screenshots>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/Ethanscharlie/AlbumRipper/refs/tags/v1.1.0/data/screenshots/screenshot1.png</image>
+      <image>https://raw.githubusercontent.com/Ethanscharlie/AlbumRipper/refs/tags/v1.1.1data/screenshots/screenshot1.png</image>
       <caption>Downloading Albums</caption>
     </screenshot>
   </screenshots>
 
   <releases>
-    <release version="1.1.0" date="2024-01-18">
+    <release version="1.1.1" date="2024-01-18">
       <url type="details">https://example.org/changelog.html#version_1.0.3</url>
       <description translate="no">
-        <p>Got Ready For Flathub</p>
+        <p>Work for Flathub quality checks</p>
         <ul>
-          <li>Renamed to io.github.Ethanscharlie.albumripper</li>
+          <li>Updated Icon</li>
+          <li>Updated Screenshot</li>
+          <li>Updated Description</li>
+          <li>Updated App Name</li>
         </ul>
       </description>
     </release>
