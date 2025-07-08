@@ -4,7 +4,7 @@
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
 
-  <name>YTMusic Ripper</name>
+  <name>Album Ripper</name>
   <summary>Download albums from YouTube Music with metadata</summary>
   <description>
     <p>Download albums from YouTube Music with album information and album art.</p>
