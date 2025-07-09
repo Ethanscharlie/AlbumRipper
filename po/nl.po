@@ -1,0 +1,84 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the albumripper package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: albumripper\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-07-08 22:11+0200\n"
+"PO-Revision-Date: 2025-07-08 22:14+0200\n"
+"Last-Translator: Heimen Stoffels <vistausss@fastmail.com>\n"
+"Language-Team: \n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.6\n"
+
+#: data/io.github.Ethanscharlie.albumripper.desktop.in:2
+#: data/io.github.Ethanscharlie.albumripper.metainfo.xml.in:7
+msgid "Album Ripper"
+msgstr "Albumripper"
+
+#: data/io.github.Ethanscharlie.albumripper.desktop.in:8
+msgid "GTK;"
+msgstr "GTK;"
+
+#: data/io.github.Ethanscharlie.albumripper.metainfo.xml.in:8
+msgid "Download Albums from YT Music"
+msgstr "Download albums van YT Music, voorzien van metagegevens"
+
+#: data/io.github.Ethanscharlie.albumripper.metainfo.xml.in:10
+msgid "Download albums from YouTube Music with album information and album art."
+msgstr "Download albums van YouTube Music, voorzien van albuminformatie en -hoezen."
+
+#: data/io.github.Ethanscharlie.albumripper.metainfo.xml.in:14
+msgid "Ethanscharlie"
+msgstr "Ethanscharlie"
+
+#: data/io.github.Ethanscharlie.albumripper.metainfo.xml.in:52
+msgid "Downloading Albums"
+msgstr "Bezig met downloaden van albums…"
+
+#. Translators: Replace "translator-credits" with your name/username, and optionally an email or URL.
+#: src/main.py:88
+msgid "https://github.com/Ethanscharlie"
+msgstr "Heimen Stoffels <vistausss@fastmail.com>"
+
+#: src/window.ui:6
+msgid "albumripper"
+msgstr "albumripper"
+
+#: src/window.ui:17
+msgid "Main Menu"
+msgstr "Hoofdmenu"
+
+#: src/window.ui:39
+msgid "Download Folder"
+msgstr "Downloadmap"
+
+#: src/window.ui:43
+msgid "~/Downloads"
+msgstr "~/Downloads"
+
+#: src/window.ui:44
+msgid "~/Music"
+msgstr "~/Muziek"
+
+#: src/window.ui:52
+msgid "URL https://music.youtube.com/playlist?li..."
+msgstr "Url (https://music.youtube.com/playlist?li…)"
+
+#: src/window.ui:80
+msgid "_Keyboard Shortcuts"
+msgstr "_Sneltoetsen"
+
+#: src/window.ui:84
+msgid "_About albumripper"
+msgstr "Over _Albumripper"
+
+#~ msgid "YTMusic Ripper"
+#~ msgstr "YTMusic-ripper"
