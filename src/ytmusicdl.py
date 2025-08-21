@@ -43,7 +43,6 @@ class Album:
     coverArtUrl: str
 
 
-
 HOME_MUSIC_FOLDER = os.path.join(os.path.expanduser("~"), "MusicT")
 TESTING_URL = (
     r"https://music.youtube.com/playlist?list=OLAK5uy_lJvbSWPW4g9-u1Cs1I1zkfylSG0KBFpOo"
@@ -156,33 +155,30 @@ class AlbumDownloader:
             .replace(">", "_")
             .replace("|", "_")
         )
-    
-    
+
     def __downloadCoverArtToFolder(self, url: str, folder: str):
         urllib.request.urlretrieve(url, os.path.join(folder, "cover.jpg"))
-    
-    
+
     def __getTrackListFromEntriesJson(self, entriesJson: str) -> list[Track]:
         tracks = []
         for i, data in enumerate(entriesJson):
             tracks.append(Track(self.__filterChars(data["title"]), data["url"], i + 1))
-    
+
         return tracks
-    
-    
+
     def __getAlbumFromURL(self, url: str) -> Album:
         ydl_opts = {
             "quiet": True,
             "extract_flat": True,
             "force_generic_extractor": True,
         }
-    
+
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info_dict = ydl.extract_info(url, download=False)
-    
+
             if not "entries" in info_dict:
                 raise URLIsNotAlbum("No entries key found")
-    
+
             return Album(
                 self.__filterChars(info_dict["title"].replace("Album - ", "")),
                 self.__filterChars(info_dict["entries"][0]["uploader"]),
@@ -190,24 +186,22 @@ class AlbumDownloader:
                 self.__getTrackListFromEntriesJson(info_dict["entries"]),
                 info_dict["thumbnails"][1]["url"],
             )
-    
+
         raise Exception("Could not get album info from ytdlp")
-    
-    
+
     def __createDirsFromFolderWithAlbum(self, folder: str, album: Album):
         if not os.path.exists(os.path.join(folder, album.artist)):
             os.makedirs(os.path.join(folder, album.artist))
-    
+
         albumPath = os.path.join(folder, album.artist, album.album)
         if os.path.exists(albumPath):
             shutil.rmtree(albumPath)
         os.makedirs(albumPath)
-    
-    
+
     def __download_content_to_folder(self, track_url, folder, track_title):
         current_directory = os.getcwd()
         os.system(f"cd '{folder}'")
-    
+
         ydl_opts = {
             "quiet": True,
             "format": "bestaudio/best",
@@ -219,17 +213,16 @@ class AlbumDownloader:
             ],
             "outtmpl": f"{folder}/{track_title}.%(ext)s",
         }
-    
+
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([track_url])
-    
+
         os.system(f"cd '{current_directory}'")
-    
-    
+
     def __writeTextMetadataToExistingFile(self, album: Album, track: Track, file: str):
         if not os.path.exists(file):
             raise Exception(f"File for track {track}, at {file} doesn't exist")
-    
+
         audio = EasyID3(file)
         audio.delete()
         audio["title"] = track.title
@@ -237,15 +230,14 @@ class AlbumDownloader:
         audio["artist"] = album.artist
         audio["tracknumber"] = str(track.index)
         audio.save()
-    
-    
+
     def __writeCoverArtToExistingFile(self, coverArtFile: str, file: str):
         if not os.path.exists(file):
             raise Exception(f"File for track {file} doesn't exist")
-    
+
         if not os.path.exists(coverArtFile):
             raise Exception("Cover art file doesn't exit")
-    
+
         id3audio = MP3(file, ID3=ID3)
         id3audio_tags: mutagen.id3.ID3 = id3audio.tags
         id3audio_tags.add(
