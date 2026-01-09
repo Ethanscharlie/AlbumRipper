@@ -29,6 +29,8 @@ class AlbumRipperWindow(Adw.ApplicationWindow):
 
     url_entry = Gtk.Template.Child()
     queue_container = Gtk.Template.Child("queue_container")
+    in_progress_container = Gtk.Template.Child("in_progress_container")
+    finished_container = Gtk.Template.Child("finished_container")
     download_folder_combo = Gtk.Template.Child()
 
     def __init__(self, **kwargs):

@@ -54,6 +54,17 @@
   </screenshots>
 
   <releases>
+    <release version="1.2.0" date="2026-01-08">
+      <url type="details">https://example.org/changelog.html#version_1.0.3</url>
+      <description translate="no">
+        <p>Cleaner UI</p>
+        <ul>
+          <li>Scrollable</li>
+          <li>Queue only allows for 3 items at a time</li>
+          <li>Finished section for items</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.1.1" date="2024-01-18">
       <url type="details">https://example.org/changelog.html#version_1.0.3</url>
       <description translate="no">

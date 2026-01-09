@@ -23,6 +23,7 @@ from gi.repository import Gtk
 from .ytmusicdl import AlbumDownloader
 import threading
 
+from collections.abc import Callable
 
 @Gtk.Template(resource_path="/io/github/Ethanscharlie/albumripper/queue_item.ui")
 class QueueItem(Adw.PreferencesGroup):
@@ -31,9 +32,43 @@ class QueueItem(Adw.PreferencesGroup):
     action_row = Gtk.Template.Child("action_row")
     status_label = Gtk.Template.Child()
 
+    on_finish = lambda self: None
+
+
+    def set_on_finish(self, run: Callable[["QueueItem"], None]):
+        self.on_finish = run
+        return self
+
     def __init__(self, url: str, download_folder: str, **kwargs):
         super().__init__(**kwargs)
-        downloader = AlbumDownloader(
-            self.action_row, self.status_label, url, download_folder
+
+        self.action_row.set_title(url)
+        self.action_row.set_subtitle(download_folder)
+        self.status_label.set_label("Waiting")
+
+        self.downloader = AlbumDownloader(
+            url, download_folder
+
+        ).set_set_status_text(
+            lambda text: self.status_label.set_label(text)
+
+        ).set_set_action_row_text(
+            lambda title, subtitle: (
+                self.action_row.set_title(title),
+                self.action_row.set_subtitle(subtitle)
+            )
+
+        ).set_on_url_error(
+            lambda url, error: (
+                self.action_row.set_title(error),
+                self.action_row.set_subtitle(url),
+                self.status_label.set_label("Failed"),
+                self.on_finish(self)
+            )
+
+        ).set_on_finish(
+            lambda: self.on_finish(self)
         )
-        threading.Thread(target=downloader.download).start()
+
+    def start_download(self):
+        threading.Thread(target=self.downloader.download).start()

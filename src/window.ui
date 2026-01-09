@@ -22,53 +22,74 @@
         </child>
         <property name="content">
 
-
           <object class="AdwClamp">
             <property name="margin-top">10</property>
             <property name="margin-start">10</property>
             <property name="margin-end">10</property>
+
             <child>
-              <object class="GtkBox">
-                <property name="orientation">vertical</property>
-                <property name="spacing">10</property>
-                <child>
-                  <object class="AdwPreferencesGroup">
-                    <property name="title">Entry</property>
-                    <child>
-                      <object class="AdwComboRow" id="download_folder_combo">
-                        <property name="title" translatable="yes">Download Folder</property>
-                        <property name="model">
-                          <object class="GtkStringList">
-                            <items>
-                              <item translatable="yes">~/Downloads</item>
-                              <item translatable="yes">~/Music</item>
-                            </items>
-                          </object>
-                        </property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="AdwEntryRow" id="url_entry">
-                        <property name="title" translatable="yes">URL https://music.youtube.com/playlist?li...</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkButton">
-                    <property name="label">Rip</property>
-                    <property name="action-name">app.rip</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="AdwPreferencesGroup" id="queue_container">
-                    <property name="title">Queue</property>
-                  </object>
-                </child>
-              </object>
+            <object class="GtkScrolledWindow" id="scrolled_window">
+              <property name="hexpand">True</property>
+              <property name="vexpand">True</property>
+
+              <child>
+                <object class="GtkBox">
+                  <property name="orientation">vertical</property>
+                  <property name="spacing">10</property>
+                  <child>
+                    <object class="AdwPreferencesGroup">
+                      <property name="title">Entry</property>
+                      <child>
+                        <object class="AdwComboRow" id="download_folder_combo">
+                          <property name="title" translatable="yes">Download Folder</property>
+                          <property name="model">
+                            <object class="GtkStringList">
+                              <items>
+                                <item translatable="yes">~/Downloads</item>
+                                <item translatable="yes">~/Music</item>
+                              </items>
+                            </object>
+                          </property>
+                        </object>
+                      </child>
+                      <child>
+                        <object class="AdwEntryRow" id="url_entry">
+                          <property name="title" translatable="yes">URL https://music.youtube.com/playlist?li...</property>
+                        </object>
+
+                      </child>
+                    </object>
+                  </child>
+
+                  <child>
+                    <object class="GtkButton">
+                      <property name="label">Rip</property>
+                      <property name="action-name">app.rip</property>
+                    </object>
+                  </child>
+
+                  <child>
+                    <object class="AdwPreferencesGroup" id="queue_container">
+                      <property name="title">Queue</property>
+                    </object>
+                  </child>
+                  <child>
+                    <object class="AdwPreferencesGroup" id="in_progress_container">
+                      <property name="title">In progress</property>
+                    </object>
+                  </child>
+                  <child>
+                    <object class="AdwPreferencesGroup" id="finished_container">
+                      <property name="title">Finished</property>
+                    </object>
+                  </child>
+
+                </object>
+              </child>
+
+            </object>
             </child>
           </object>
-
 
         </property>
       </object>
@@ -87,3 +108,4 @@
     </section>
   </menu>
 </interface>
+
