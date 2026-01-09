@@ -12,7 +12,7 @@
         },
         {
             "type": "file",
-            "url": "https://files.pythonhosted.org/packages/14/41/2f048ae3f6d0fa2e59223f08ba5049dbcdac628b0a9f9deac722dd9260a5/yt_dlp-2025.6.30-py3-none-any.whl",
+            "url": "https://files.pythonhosted.org/packages/14/41/2f048ae3f6d0fa2e59223f08ba5049dbcdac628b0a9f9deac722dd9260a5/yt_dlp-2025.12.8-py3-none-any.whl",
             "sha256": "541becc29ed7b7b3a08751c0a66da4b7f8ee95cb81066221c78e83598bc3d1f3"
         }
     ]

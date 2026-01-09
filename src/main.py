@@ -46,6 +46,31 @@ class AlbumRipperApplication(Adw.Application):
         self.create_action("preferences", self.on_preferences_action)
         self.create_action("rip", self.on_rip)
 
+        self.BANDWIDTH = 3
+        self.in_progress = 0
+        self.queue = []
+
+    def on_queue_item_finish(self, queue_item):
+        win = self.props.active_window
+        if not win or not hasattr(win, "url_entry"):
+            print("No entry field found!")
+            return
+
+        win.in_progress_container.remove(queue_item)
+        win.finished_container.add(queue_item)
+        self.in_progress -= 1
+
+        if (self.in_progress < self.BANDWIDTH and len(self.queue) > 0):
+            child = self.queue[0]
+
+            win.queue_container.remove(child)
+            self.queue.remove(child)
+
+            win.in_progress_container.add(child)
+            self.in_progress += 1
+
+            child.start_download()
+
     def on_rip(self, *args):
         win = self.props.active_window
         if not win or not hasattr(win, "url_entry"):
@@ -58,7 +83,17 @@ class AlbumRipperApplication(Adw.Application):
         folder_raw = win.download_folder_combo.get_selected_item().get_string()
         folder = os.path.join(os.path.expanduser("~"), folder_raw.replace(r"~/", ""))
 
-        win.queue_container.add(QueueItem(url, folder))
+        queue_item = QueueItem(
+            url, folder
+        ).set_on_finish(self.on_queue_item_finish)
+
+        if (self.in_progress >= self.BANDWIDTH):
+            win.queue_container.add(queue_item)
+            self.queue.append(queue_item)
+        else:
+            win.in_progress_container.add(queue_item)
+            self.in_progress += 1
+            queue_item.start_download()
 
         win.url_entry.set_text("")
 
@@ -82,7 +117,7 @@ class AlbumRipperApplication(Adw.Application):
             developer_name="Ethanscharlie",
             version="1.1.0",
             developers=["Ethanscharlie"],
-            copyright="© 2025 Ethanscharlie",
+            copyright="© 2026 Ethanscharlie",
         )
         # Translators: Replace "translator-credits" with your name/username, and optionally an email or URL.
         about.set_translator_credits(_("https://github.com/Ethanscharlie"))

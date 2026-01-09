@@ -14,6 +14,7 @@ import time
 import sys
 import urllib
 from urllib.parse import urlparse
+from collections.abc import Callable
 
 import mutagen
 from mutagen.easyid3 import EasyID3
@@ -43,78 +44,71 @@ class Album:
     coverArtUrl: str
 
 
-HOME_MUSIC_FOLDER = os.path.join(os.path.expanduser("~"), "MusicT")
-TESTING_URL = (
-    r"https://music.youtube.com/playlist?list=OLAK5uy_lJvbSWPW4g9-u1Cs1I1zkfylSG0KBFpOo"
-)
-
-
 class AlbumDownloader:
-    def __init__(
-        self,
-        action_row,
-        status_label,
-        url: str = TESTING_URL,
-        folder: str = HOME_MUSIC_FOLDER,
-    ):
-        self.action_row = action_row
-        self.status_label = status_label
-
+    def __init__(self, url: str, folder: str):
         self.url = url
         self.folder = folder
 
+        self.set_status_text = lambda text: None
+        self.set_action_row_text = lambda title, subtitle: None
+        self.on_url_error = lambda url, error: None
+        self.on_finish = lambda: None
+
         self.finishedDownloading = 0
         self.totalToDownload = 0
+
+    def set_set_status_text(self, run: Callable[[str], None]):
+        self.set_status_text = run
+        return self
+
+    def set_set_action_row_text(self, run: Callable[[str, str], None]):
+        self.set_action_row_text = run
+        return self
+
+    def set_on_url_error(self, run: Callable[[str, str], None]):
+        self.on_url_error = run
+        return self
+
+    def set_on_finish(self, run: Callable[[], None]):
+        self.on_finish = run
+        return self
 
     def download(self):
         download_start_time = time.time()
         self.finishedDownloading = 0
         self.totalToDownload = 0
 
-        self.status_label.set_label("Getting album info")
+        self.set_status_text("Getting album info")
 
         parsedUrl = urlparse(self.url)
         hostname = parsedUrl.hostname or ""
         isCorrectDomain = "music.youtube.com" in hostname.lower()
 
         if not isCorrectDomain:
-            self.action_row.set_title(f"Invalid url: {self.url}")
-            self.action_row.set_subtitle("URL not from music.youtube.com")
-            self.status_label.set_label("Failed")
+            self.on_url_error(self.url, "URL not from music.youtube.com")
             return
 
         try:
-            album = self.__getAlbumFromURL(self.url)
+            album = self.__get_album_from_url(self.url)
         except URLIsNotAlbum:
-            self.action_row.set_title(f"Invalid url: {self.url}")
-            self.action_row.set_subtitle("URL is not an album")
-            self.status_label.set_label("Failed")
+            self.on_url_error(self.url, "URL is not an album")
             return
         except yt_dlp.utils.ExtractorError:
-            self.action_row.set_title(f"Invalid url: {self.url}")
-            self.action_row.set_subtitle("Extractor Error")
-            self.status_label.set_label("Failed")
+            self.on_url_error(self.url, "Extractor Error")
             return
         except yt_dlp.utils.DownloadError:
-            self.action_row.set_title(f"Invalid url: {self.url}")
-            self.action_row.set_subtitle("Download Error")
-            self.status_label.set_label("Failed")
+            self.on_url_error(self.url, "Download Error")
             return
 
-        self.action_row.set_title(album.album)
-        self.action_row.set_subtitle(f"{album.artist} * {self.folder}")
-        self.totalToDownload = len(album.tracks)
+        self.set_action_row_text(album.album, f"{album.artist} · {self.folder}")
+        self.set_status_text("Starting Download")
 
-        self.status_label.set_label("Creating Dirs")
+        self.totalToDownload = len(album.tracks)
 
         self.__createDirsFromFolderWithAlbum(self.folder, album)
         album_folder = os.path.join(self.folder, album.artist, album.album)
 
-        self.status_label.set_label("Downloading album art")
-
-        self.__downloadCoverArtToFolder(album.coverArtUrl, album_folder)
-
-        self.status_label.set_label("Downloading content")
+        self.__download_cover_art_to_folder(album.coverArtUrl, album_folder)
 
         with concurrent.futures.ThreadPoolExecutor() as executor:
             for track in album.tracks:
@@ -124,7 +118,8 @@ class AlbumDownloader:
 
         download_time = time.time() - download_start_time
         print(f"Download took {download_time:.2f} seconds")
-        self.status_label.set_label(f"Finished in {download_time:.2f} seconds")
+        self.set_status_text(f"Finished in {download_time:.2f} seconds")
+        self.on_finish()
 
     def __downloadTrackAndWriteMetadata(
         self, albumFolder: str, album: Album, track: Track
@@ -139,7 +134,7 @@ class AlbumDownloader:
 
         self.finishedDownloading += 1
 
-        self.status_label.set_label(
+        self.set_status_text(
             f"Downloading content {self.finishedDownloading}/{self.totalToDownload}"
         )
 
@@ -156,17 +151,17 @@ class AlbumDownloader:
             .replace("|", "_")
         )
 
-    def __downloadCoverArtToFolder(self, url: str, folder: str):
+    def __download_cover_art_to_folder(self, url: str, folder: str):
         urllib.request.urlretrieve(url, os.path.join(folder, "cover.jpg"))
 
-    def __getTrackListFromEntriesJson(self, entriesJson: str) -> list[Track]:
+    def __get_track_list_from_entries_json(self, entriesJson: str) -> list[Track]:
         tracks = []
         for i, data in enumerate(entriesJson):
             tracks.append(Track(self.__filterChars(data["title"]), data["url"], i + 1))
 
         return tracks
 
-    def __getAlbumFromURL(self, url: str) -> Album:
+    def __get_album_from_url(self, url: str) -> Album:
         ydl_opts = {
             "quiet": True,
             "extract_flat": True,
@@ -183,7 +178,7 @@ class AlbumDownloader:
                 self.__filterChars(info_dict["title"].replace("Album - ", "")),
                 self.__filterChars(info_dict["entries"][0]["uploader"]),
                 2020,
-                self.__getTrackListFromEntriesJson(info_dict["entries"]),
+                self.__get_track_list_from_entries_json(info_dict["entries"]),
                 info_dict["thumbnails"][1]["url"],
             )
 
