@@ -54,6 +54,12 @@
   </screenshots>
 
   <releases>
+    <release version="1.2.2" date="2026-05-06">
+      <description translate="no">
+        <p>Updated ytdlp</p>
+        <p>Updated runtime</p>
+      </description>
+    </release>
     <release version="1.2.1" date="2026-02-01">
       <description translate="no">
         <p>Updated ytdlp</p>
