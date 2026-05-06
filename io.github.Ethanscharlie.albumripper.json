@@ -1,7 +1,7 @@
 {
     "id" : "io.github.Ethanscharlie.albumripper",
     "runtime" : "org.gnome.Platform",
-    "runtime-version" : "48",
+    "runtime-version" : "50",
     "sdk" : "org.gnome.Sdk",
     "command" : "albumripper",
     "finish-args" : [
@@ -31,7 +31,7 @@
             "sources" : [{
                 "type" : "git",
                 "url" : "https://github.com/Ethanscharlie/albumripper.git",
-                "tag": "v1.2.1"
+                "tag": "v1.2.2"
             }]
         }
     ]
